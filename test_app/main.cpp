@@ -9,8 +9,6 @@
 #include <engine.h>
 #include <text.h>
 
-#include "GLFW/glfw3.h"
-
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -37,6 +35,7 @@ enum class Actions : GPE::Input::ActionId
     MAX
 };
 
+using GPE::Input;
 int main()
 {
 #ifdef __linux__
@@ -47,12 +46,11 @@ int main()
     std::array<GPE::Action, static_cast<size_t>(Actions::MAX)> actions;
 
     GPE::Engine engine{"My App", SCREEN_WIDTH, SCREEN_HEIGHT, {actions.data()}, BG_COLOR};
-    engine.input.bind_key(GLFW_KEY_ENTER, Actions::PRINT_HELLO)
+    engine.input.bind_key(Input::KEY_ENTER, Actions::PRINT_HELLO)
         .set_callback([&engine](GPE::Action::State) { engine.print_str("HELLO"); },
                       GPE::Action::CallbackMode::JUST_PRESS);
-    // engine.input.bind_key(GLFW_KEY_ESCAPE, Actions::QUIT);
-    engine.input.bind_key(GLFW_KEY_Q, Actions::QUIT);
-    engine.input.bind_key(GLFW_KEY_ESCAPE, Actions::QUIT);
+    engine.input.bind_key(Input::KEY_Q, Actions::QUIT);
+    engine.input.bind_key(Input::KEY_ESCAPE, Actions::QUIT);
     engine.input.get_action(Actions::QUIT)
         .set_callback(
             [&engine](GPE::Action::State)

@@ -112,7 +112,8 @@ namespace GPE
                            [](GLFWwindow* window, int key, int scancode, int action, int mods)
                            {
                                static_cast<decltype(this)>(glfwGetWindowUserPointer(window))
-                                   ->input.key_cb(key, action == GLFW_PRESS, mods,
+                                   ->input.key_cb(static_cast<Input::Key>(key),
+                                                  action == GLFW_PRESS, mods,
                                                   glfwGetWindowUserPointer(window));
                            });
         glfwMakeContextCurrent(window);
