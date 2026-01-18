@@ -27,24 +27,23 @@ namespace GPE
             switch(callback_mode)
             {
                 case CallbackMode::PRESS:
-                    if(is_pressed()) callback(callback_data, static_user_data, m_state);
+                    if(is_pressed()) callback(m_state);
                     break;
                 case CallbackMode::RELEASE:
-                    if(is_released()) callback(callback_data, static_user_data, m_state);
+                    if(is_released()) callback(m_state);
                     break;
                 case CallbackMode::JUST_PRESS:
-                    if(is_just_pressed()) callback(callback_data, static_user_data, m_state);
+                    if(is_just_pressed()) callback(m_state);
                     break;
                 case CallbackMode::JUST_RELEASE:
-                    if(is_just_released()) callback(callback_data, static_user_data, m_state);
+                    if(is_just_released()) callback(m_state);
                     break;
                 case CallbackMode::JUST_BOTH:
-                    if(is_just_pressed() || is_just_released())
-                        callback(callback_data, static_user_data, m_state);
+                    if(is_just_pressed() || is_just_released()) callback(m_state);
                     break;
 
                 case CallbackMode::BOTH:
-                    callback(callback_data, static_user_data, m_state);
+                    callback(m_state);
                 case CallbackMode::NEVER:
                     break;
             }
@@ -69,13 +68,11 @@ namespace GPE
     bool Action::is_just_pressed() const { return m_state == State::JUST_PRESSED; }
     bool Action::is_just_released() const { return m_state == State::JUST_RELEASED; }
 
-    void Action::set_callback(void (*callback)(void* user_data, void* static_user_data,
-                                               State state))
+    void Action::set_callback(const std::function<void(State state)>& callback)
     {
         this->callback = callback;
     }
-    void Action::set_callback(void (*callback)(void* user_data, void* static_user_data,
-                                               State state),
+    void Action::set_callback(const std::function<void(State state)>& callback,
                               const CallbackMode mode)
     {
         this->callback = callback;

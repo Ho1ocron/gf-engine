@@ -48,17 +48,17 @@ int main()
 
     GPE::Engine engine{"My App", SCREEN_WIDTH, SCREEN_HEIGHT, {actions.data()}, BG_COLOR};
     engine.input.bind_key(GLFW_KEY_ENTER, Actions::PRINT_HELLO)
-        .set_callback([](void*, void*, GPE::Action::State) { printf("HELLO\n"); },
+        .set_callback([&engine](GPE::Action::State) { engine.print_str("HELLO"); },
                       GPE::Action::CallbackMode::JUST_PRESS);
     // engine.input.bind_key(GLFW_KEY_ESCAPE, Actions::QUIT);
     engine.input.bind_key(GLFW_KEY_Q, Actions::QUIT);
     engine.input.bind_key(GLFW_KEY_ESCAPE, Actions::QUIT);
     engine.input.get_action(Actions::QUIT)
         .set_callback(
-            [](void* _engine, void*, GPE::Action::State)
+            [&engine](GPE::Action::State)
             {
                 printf("Engine::queue_quit()\n");
-                static_cast<decltype(&engine)>(_engine)->queue_quit();
+                engine.queue_quit();
             },
             GPE::Action::CallbackMode::JUST_PRESS);
     engine.init();
