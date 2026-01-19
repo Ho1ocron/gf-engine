@@ -7,6 +7,7 @@
 #endif
 // #include "app.h"
 #include <engine.h>
+#include <input.h>
 #include <text.h>
 
 
@@ -28,12 +29,69 @@ GPE::Vec3 dynamic_gradient(float time)
 
 std::vector<std::shared_ptr<GPE::Text>> texts;
 
-enum class Actions : GPE::Input::ActionId
+enum class Actions : uint16_t
 {
     QUIT,
     PRINT_HELLO,
-    MAX
+    MAX,
+    MOVE_UP,
+    MOVE_DOWN,
+    MOVE_RIGHT,
+    MOVE_LEFT
 };
+
+
+class MvText : public GPE::Text
+{
+private:
+    GPE::Engine& _engine;
+
+public:
+    void update(const float& deltaTime, const unsigned int& screen_width,
+                const unsigned int& screen_height) override
+    {
+        const float moveSpeed = 250.0f;  // pixels per second
+        printf("%d\n", _engine.input.get_action(Actions::MOVE_UP).is_pressed());
+
+        if(_engine.input.get_action(Actions::MOVE_UP).is_pressed())
+        {
+            // printf("W is pressed\n");
+            position.y += moveSpeed * deltaTime;
+        }
+        if(_engine.input.get_action(Actions::MOVE_DOWN).is_pressed())
+        {
+            position.y -= moveSpeed * deltaTime;
+        }
+        if(_engine.input.get_action(Actions::MOVE_RIGHT).is_pressed())
+        {
+            position.x += moveSpeed * deltaTime;
+        }
+        if(_engine.input.get_action(Actions::MOVE_LEFT).is_pressed())
+        {
+            position.x -= moveSpeed * deltaTime;
+        }
+    }
+
+    MvText(GPE::Engine& engine, GPE::Vec3 init_pos)
+        : GPE::Text(CHARACTER,                                 // initial text
+                    "assets/fonts/JetBrainsMono-Regular.ttf",  // font path — must be valid!
+                    init_pos,                                  // initial position
+                    52.0f,                                     // font size
+                    0.5f,                                      // scale
+                    800,                                       // screen width (example)
+                    600,                                       // screen height (example)
+                    glm::vec3 BLUE                             // color (white)
+                    ),
+          _engine(engine)
+
+    {
+        _engine.input.bind_key(GPE::Input::Key::KEY_W, Actions::MOVE_UP);
+        _engine.input.bind_key(GPE::Input::Key::KEY_S, Actions::MOVE_DOWN);
+        _engine.input.bind_key(GPE::Input::Key::KEY_D, Actions::MOVE_RIGHT);
+        _engine.input.bind_key(GPE::Input::Key::KEY_A, Actions::MOVE_LEFT);
+    }
+};
+
 
 using GPE::Input;
 int main()
@@ -67,6 +125,10 @@ int main()
             52.0f, 0.5f, SCREEN_WIDTH, SCREEN_HEIGHT, GPE::Vec3 YELLOW)));
 
     text1->setPositionOnScreenCenter();
+
+    std::shared_ptr<MvText> mv_text = engine.create_object<MvText>(
+        std::move(std::make_unique<MvText>(engine, GPE::Vec3{100.0f, 100.0f, 0.0f})));
+
 
     for(int i = 0; i < 10; ++i)
     {
