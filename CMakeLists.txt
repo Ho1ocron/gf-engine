@@ -7,49 +7,44 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(graphics-engine)
 
-# file(COPY
-#     ${PROJECT_SOURCE_DIR}/assets/fonts/JetBrainsMono-Italic.ttf
-#     DESTINATION ${CMAKE_BINARY_DIR}
+# see constants.h (core/constants/core_constants.h and test_app/constants.h)
+# add_compile_definitions(
+#   # SHADER_DIR="assets/shaders/"
+#   # FONT_DIR="assets/fonts/"
 # )
 
-add_subdirectory(glfw/)
-add_subdirectory(freetype/)
-add_subdirectory(glm/)
-
-add_library(math STATIC
-    engine/math/src/vector2.cpp
-    engine/math/src/vector3.cpp  
+add_executable(app
+    test_app/main.cpp
+    # core/src/engine.cpp
+    # test_app/app.cpp
 )
 
-add_library(glad STATIC 
-    glad/src/glad.c
-)
-
-target_include_directories(math PUBLIC
-    ${PROJECT_SOURCE_DIR}/engine/math/include
-)
-
-target_include_directories(glad PUBLIC
-    ${PROJECT_SOURCE_DIR}/glad/include
-)
-
-# target_include_directories(shaders PUBLIC 
-#     ${PROJECT_SOURCE_DIR}/src/shaders/include
+# include the engine
+add_subdirectory(core/)
+add_library(globals INTERFACE test_app/constants.h)
+target_include_directories(globals PUBLIC INTERFACE test_app/)
+# target_include_directories(engine
+#     INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/core/include/GF_ENGINE  # directory containing engine.h
 # )
+target_link_libraries(app PUBLIC
+    glfw
+    glad
+    freetype
+    glm
+    math
+    render
+    resource_manager
+    font
+    label
+    camera
+    globals
+    drawable
+    engine
+    text
+    input
+)
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
 )
-add_executable(graphics-engine
-    engine/main.cpp
-    engine/app.cpp
-    engine/text.cpp
-)
-add_dependencies(graphics-engine copy_assets)
-target_compile_definitions(graphics-engine PRIVATE
-    SHADER_DIR="assets/shaders/"
-    FONT_DIR="assets/fonts/"
-)
-
-target_include_directories(${PROJECT_NAME} PRIVATE glfw freetype glm)
-# target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
-target_link_libraries(graphics-engine PRIVATE math glfw glad freetype glm "-framework OpenGL") 
+add_dependencies(app copy_assets)
+add_dependencies(app copy_core_assets)

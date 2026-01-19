@@ -1,0 +1,32 @@
+Language: Cpp
+BasedOnStyle: Google
+IndentWidth: 4
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+ColumnLimit: 100
+PenaltyBreakAssignment: 2
+PenaltyReturnTypeOnItsOwnLine: 200
+PointerAlignment: Left
+SpaceBeforeParens: Never
+AccessModifierOffset: -4
+AllowShortBlocksOnASingleLine: Always
+AllowShortFunctionsOnASingleLine: All
+BreakBeforeBraces: Allman
+SpaceAfterControlStatementKeyword: true
+
+# BreakBeforeBraces: Custom
+
+# BraceWrapping:
+#   AfterClass: true
+#   AfterStruct: true
+#   AfterNamespace: true
+
+#   # Keep everything else Google-style
+#   AfterFunction: false
+#   AfterEnum: false
+#   AfterUnion: false
+#   AfterExternBlock: false
+#   AfterControlStatement: false
+#   BeforeElse: false
+#   BeforeCatch: false
+#   IndentBraces: false
