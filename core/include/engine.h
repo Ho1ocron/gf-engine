@@ -8,14 +8,13 @@
 #include <camera.h>
 #include <drawable2d.h>
 #include <ft2build.h>
+#include <input.h>
 #include <label.h>
 #include <resource_manager.h>
 
-#include <functional>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
-#include <vector>
 #include FT_FREETYPE_H
 
 
@@ -23,6 +22,16 @@ namespace GPE
 {
     class Engine
     {
+    public:
+        enum class RunStatus : unsigned char
+        {
+            UNINITED,
+            INITED,
+            RUNNING,
+            QUITTING
+        };
+        RunStatus status = RunStatus::UNINITED;
+
     private:
         int screen_width, screen_height;
 
@@ -35,6 +44,10 @@ namespace GPE
 
         Camera camera{};
 
+    public:
+        Input input;
+
+    private:
         float deltaTime = 0.0f;
         float timeNow = 0.0f;
         float lastFrame = 0.0f;
@@ -50,6 +63,7 @@ namespace GPE
         void init();
         void update();
         bool should_quit();
+        void queue_quit();
         void quit();
 
         template <typename T>
@@ -79,7 +93,8 @@ namespace GPE
         GLFWwindow* get_window() const { return window; }
 
         explicit Engine(const char* name, int screen_width, int screen_height,
-                        const glm::vec4& bg_color = {0.0f, 0.0f, 0.0f, 1.0f});
+                        Input&& input = Input(),
+                        const glm::vec4& bg_color = {0.1f, 0.1f, 0.1f, 1.0f});
         ~Engine() = default;
     };
 

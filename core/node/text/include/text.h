@@ -72,7 +72,7 @@ namespace GPE
         void setColor(const glm::vec3& new_color) { color = new_color; }
         glm::vec3 getColor() const { return color; }
 
-    private:
+    protected:
         void loadFont(const std::string& path, float& size);
         void setupBuffers();
 

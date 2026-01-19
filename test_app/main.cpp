@@ -1,14 +1,15 @@
+#include <array>
 #include <cmath>
-#include <string>
+
 
 #ifdef __linux__
 #include <filesystem>
 #endif
 // #include "app.h"
 #include <engine.h>
+#include <input.h>
 #include <text.h>
 
-#include "player/player.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -17,7 +18,7 @@
 #define YELLOW {1.0f, 1.0f, 0.0f}
 #define BLUE {0.0f, 1.0f, 1.0f}
 
-#define CHARACTER "@*>"
+#define CHARACTER "@"
 
 
 GPE::Vec3 dynamic_gradient(float time)
@@ -28,7 +29,74 @@ GPE::Vec3 dynamic_gradient(float time)
 
 std::vector<std::shared_ptr<GPE::Text>> texts;
 
+enum class Actions : uint16_t
+{
+    K,
+    QUIT,
+    PRINT_HELLO,
+    MOVE_UP,
+    MOVE_DOWN,
+    MOVE_RIGHT,
+    MOVE_LEFT,
+    ACTIONS_MAX,
+};
 
+
+class MvText : public GPE::Text
+{
+private:
+    GPE::Engine& _engine;
+
+public:
+    void update(const float& deltaTime, const unsigned int& screen_width,
+                const unsigned int& screen_height) override
+    {
+        const float moveSpeed = 500.0f;  // pixels per second
+        // printf("Is key W pressed: %d\n",
+        // _engine.input.get_action(Actions::MOVE_UP).is_pressed()); printf("Is key S pressed:
+        // %d\n", _engine.input.get_action(Actions::K).is_pressed());
+
+        if(_engine.input.get_action(Actions::MOVE_UP).is_pressed())
+        {
+            // printf("W is pressed\n");
+            position.y += moveSpeed * deltaTime;
+        }
+        if(_engine.input.get_action(Actions::MOVE_DOWN).is_pressed())
+        {
+            position.y -= moveSpeed * deltaTime;
+        }
+        if(_engine.input.get_action(Actions::MOVE_RIGHT).is_pressed())
+        {
+            position.x += moveSpeed * deltaTime;
+        }
+        if(_engine.input.get_action(Actions::MOVE_LEFT).is_pressed())
+        {
+            position.x -= moveSpeed * deltaTime;
+        }
+    }
+
+    MvText(GPE::Engine& engine, GPE::Vec3 init_pos)
+        : GPE::Text(CHARACTER,                                 // initial text
+                    "assets/fonts/JetBrainsMono-Regular.ttf",  // font path — must be valid!
+                    init_pos,                                  // initial position
+                    52.0f,                                     // font size
+                    0.5f,                                      // scale
+                    800,                                       // screen width (example)
+                    600,                                       // screen height (example)
+                    glm::vec3 BLUE                             // color (white)
+                    ),
+          _engine(engine)
+
+    {
+        _engine.input.bind_key(GPE::Input::Key::KEY_W, Actions::MOVE_UP);
+        _engine.input.bind_key(GPE::Input::Key::KEY_S, Actions::MOVE_DOWN);
+        _engine.input.bind_key(GPE::Input::Key::KEY_D, Actions::MOVE_RIGHT);
+        _engine.input.bind_key(GPE::Input::Key::KEY_A, Actions::MOVE_LEFT);
+    }
+};
+
+
+using GPE::Input;
 int main()
 {
 #ifdef __linux__
@@ -36,7 +104,22 @@ int main()
     printf("path: %s\n", std::filesystem::current_path().c_str());
 #endif
 
-    GPE::Engine engine{"My App", SCREEN_WIDTH, SCREEN_HEIGHT, BG_COLOR};
+    std::array<GPE::Action, static_cast<size_t>(Actions::ACTIONS_MAX)> actions;
+
+    GPE::Engine engine{"My App", SCREEN_WIDTH, SCREEN_HEIGHT, {actions}, BG_COLOR};
+    engine.input.bind_key(Input::KEY_ENTER, Actions::PRINT_HELLO)
+        .set_callback([&engine](GPE::Action::State) { engine.print_str("HELLO"); },
+                      GPE::Action::CallbackMode::JUST_PRESS);
+    engine.input.bind_key(Input::KEY_Q, Actions::QUIT);
+    engine.input.bind_key(Input::KEY_ESCAPE, Actions::QUIT);
+    engine.input.get_action(Actions::QUIT)
+        .set_callback(
+            [&engine](GPE::Action::State)
+            {
+                printf("Engine::queue_quit()\n");
+                engine.queue_quit();
+            },
+            GPE::Action::CallbackMode::JUST_PRESS);
     engine.init();
 
     std::shared_ptr<GPE::Text> text1 =
@@ -45,6 +128,10 @@ int main()
             52.0f, 0.5f, SCREEN_WIDTH, SCREEN_HEIGHT, GPE::Vec3 YELLOW)));
 
     text1->setPositionOnScreenCenter();
+
+    std::shared_ptr<MvText> mv_text = engine.create_object<MvText>(
+        std::move(std::make_unique<MvText>(engine, GPE::Vec3{100.0f, 100.0f, 0.0f})));
+
 
     for(int i = 0; i < 10; ++i)
     {
@@ -62,6 +149,10 @@ int main()
         }
         text1->setColor(dynamic_gradient(engine.get_time()));
         engine.update();
+        if(engine.input.get_action(Actions::PRINT_HELLO).is_just_pressed())
+        {
+            printf("PRINT_HELLO JUST PRESSED\n");
+        }
     }
 
     engine.quit();

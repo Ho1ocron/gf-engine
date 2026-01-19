@@ -3,7 +3,8 @@
 #include <core_constants.h>
 #include <glad/glad.h>
 
-class Texture {
+class Texture
+{
     GLuint _id;
     unsigned int _w, _h;
 

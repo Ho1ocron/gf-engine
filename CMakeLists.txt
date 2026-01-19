@@ -22,10 +22,10 @@ add_executable(app
 # include the engine
 add_subdirectory(core/)
 add_library(globals INTERFACE test_app/constants.h)
-target_include_directories(globals PUBLIC INTERFACE test_app/)              
-target_include_directories(engine
-    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/core/include/GF_ENGINE  # directory containing engine.h
-)
+target_include_directories(globals PUBLIC INTERFACE test_app/)
+# target_include_directories(engine
+#     INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/core/include/GF_ENGINE  # directory containing engine.h
+# )
 target_link_libraries(app PUBLIC
     glfw
     glad
@@ -41,6 +41,7 @@ target_link_libraries(app PUBLIC
     drawable
     engine
     text
+    input
 )
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
