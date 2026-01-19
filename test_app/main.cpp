@@ -122,15 +122,14 @@ int main()
             GPE::Action::CallbackMode::JUST_PRESS);
     engine.init();
 
+    std::shared_ptr<MvText> mv_text = engine.create_object<MvText>(
+        std::move(std::make_unique<MvText>(engine, GPE::Vec3{100.0f, 100.0f, 0.0f})));
     std::shared_ptr<GPE::Text> text1 =
         engine.create_object<GPE::Text>(std::move(std::make_unique<GPE::Text>(
             "Hello, World!", "assets/fonts/JetBrainsMono-Regular.ttf", GPE::Vec3{25.0f, 0.0f, 0.0f},
             52.0f, 0.5f, SCREEN_WIDTH, SCREEN_HEIGHT, GPE::Vec3 YELLOW)));
 
     text1->setPositionOnScreenCenter();
-
-    std::shared_ptr<MvText> mv_text = engine.create_object<MvText>(
-        std::move(std::make_unique<MvText>(engine, GPE::Vec3{100.0f, 100.0f, 0.0f})));
 
 
     for(int i = 0; i < 10; ++i)
