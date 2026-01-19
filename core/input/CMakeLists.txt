@@ -7,4 +7,5 @@ target_include_directories(input
 )
 target_link_libraries(input PUBLIC
     utils
+    glfw
 )

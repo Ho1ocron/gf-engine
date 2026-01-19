@@ -47,6 +47,8 @@ target_link_libraries(engine PUBLIC
     input
 )
 
+# target_link_libraries(input PUBLIC glfw)
+
 
 target_include_directories(core_globals PUBLIC INTERFACE constants/)
 add_subdirectory(math/)
