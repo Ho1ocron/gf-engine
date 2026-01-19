@@ -18,7 +18,7 @@
 #define YELLOW {1.0f, 1.0f, 0.0f}
 #define BLUE {0.0f, 1.0f, 1.0f}
 
-#define CHARACTER "@*>"
+#define CHARACTER "@"
 
 
 GPE::Vec3 dynamic_gradient(float time)
@@ -31,13 +31,14 @@ std::vector<std::shared_ptr<GPE::Text>> texts;
 
 enum class Actions : uint16_t
 {
+    K,
     QUIT,
     PRINT_HELLO,
-    MAX,
     MOVE_UP,
     MOVE_DOWN,
     MOVE_RIGHT,
-    MOVE_LEFT
+    MOVE_LEFT,
+    ACTIONS_MAX,
 };
 
 
@@ -50,8 +51,10 @@ public:
     void update(const float& deltaTime, const unsigned int& screen_width,
                 const unsigned int& screen_height) override
     {
-        const float moveSpeed = 250.0f;  // pixels per second
-        printf("%d\n", _engine.input.get_action(Actions::MOVE_UP).is_pressed());
+        const float moveSpeed = 500.0f;  // pixels per second
+        // printf("Is key W pressed: %d\n",
+        // _engine.input.get_action(Actions::MOVE_UP).is_pressed()); printf("Is key S pressed:
+        // %d\n", _engine.input.get_action(Actions::K).is_pressed());
 
         if(_engine.input.get_action(Actions::MOVE_UP).is_pressed())
         {
@@ -101,7 +104,7 @@ int main()
     printf("path: %s\n", std::filesystem::current_path().c_str());
 #endif
 
-    std::array<GPE::Action, static_cast<size_t>(Actions::MAX)> actions;
+    std::array<GPE::Action, static_cast<size_t>(Actions::ACTIONS_MAX)> actions;
 
     GPE::Engine engine{"My App", SCREEN_WIDTH, SCREEN_HEIGHT, {actions}, BG_COLOR};
     engine.input.bind_key(Input::KEY_ENTER, Actions::PRINT_HELLO)
