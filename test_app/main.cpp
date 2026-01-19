@@ -45,7 +45,7 @@ int main()
 
     std::array<GPE::Action, static_cast<size_t>(Actions::MAX)> actions;
 
-    GPE::Engine engine{"My App", SCREEN_WIDTH, SCREEN_HEIGHT, {actions.data()}, BG_COLOR};
+    GPE::Engine engine{"My App", SCREEN_WIDTH, SCREEN_HEIGHT, {actions}, BG_COLOR};
     engine.input.bind_key(Input::KEY_ENTER, Actions::PRINT_HELLO)
         .set_callback([&engine](GPE::Action::State) { engine.print_str("HELLO"); },
                       GPE::Action::CallbackMode::JUST_PRESS);
@@ -84,6 +84,10 @@ int main()
         }
         text1->setColor(dynamic_gradient(engine.get_time()));
         engine.update();
+        if(engine.input.get_action(Actions::PRINT_HELLO).is_just_pressed())
+        {
+            printf("PRINT_HELLO JUST PRESSED\n");
+        }
     }
 
     engine.quit();

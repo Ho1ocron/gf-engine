@@ -5,6 +5,7 @@
 #include <bounded_counter.h>
 
 #include <algorithm>
+#include <cstdio>
 #include <functional>
 #include <vector>
 
@@ -44,7 +45,7 @@ namespace GPE
         bool is_released() const;
         bool is_just_pressed() const;
         bool is_just_released() const;
-        void update(const bool press_or_release, void* callback_data = nullptr);
+        Action& update(const bool press_or_release);
 
         void set_callback(const std::function<void(State state)>& callback);
         void set_callback(const std::function<void(State state)>& callback,
@@ -204,6 +205,19 @@ namespace GPE
             operator bool() const { return static_cast<bool>(value); }
             constexpr ButtonState(const bool value) : value(static_cast<State>(value)) {}
         };
+        struct ActionsArray
+        {
+            Action* const ptr;
+            const size_t count;
+            constexpr ActionsArray(Action* const ptr, const size_t count) : ptr(ptr), count(count)
+            {
+            }
+            template <size_t N>
+            constexpr ActionsArray(std::array<Action, N> array)
+                : ptr(array.data()), count(array.size())
+            {
+            }
+        };
 
     public:
         // std::vector<Action> actions;
@@ -221,9 +235,12 @@ namespace GPE
             bool operator<(const _bindpair other) const { return this->key < other.key; }
         };
         std::vector<_bindpair> _binds;
+        std::vector<ActionId> _just_pressed_actions{};
+        std::vector<ActionId> _just_released_actions{};
 
     public:
-        void key_cb(Key key, const ButtonState state, const int mods, void* user_data);
+        void key_cb(Key key, const ButtonState state, const int mods);
+        void frame_update();
 
         // @warning you should not pass action_id that is greater than the last action
         // because there is no overflow checks. Use enum with MAX member as last
@@ -256,8 +273,8 @@ namespace GPE
         }
         void unbind_key(const Key key);
 
-        Input(Action* const actions_array, std::vector<_bindpair>&& binds);
-        Input(Action* const actions_array = nullptr);
+        Input(ActionsArray actions, std::vector<_bindpair>&& binds);
+        Input(ActionsArray = {nullptr, 0});
     };
 
 }  // namespace GPE

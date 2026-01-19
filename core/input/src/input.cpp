@@ -6,7 +6,7 @@
 namespace GPE
 {
 
-    void Action::update(const bool press_or_release, void* callback_data)
+    Action& Action::update(const bool press_or_release)
     {
         if(press_or_release)
         {
@@ -48,6 +48,7 @@ namespace GPE
                     break;
             }
         }
+        return *this;
     }
 
 
@@ -80,17 +81,41 @@ namespace GPE
     }
     void Action::set_callback_mode(const CallbackMode mode) { this->callback_mode = mode; }
 
-    void Input::key_cb(Input::Key key, const ButtonState state, const int mods, void* user_data)
+    void Input::key_cb(Input::Key key, const ButtonState state, const int mods)
     {
         auto it = std::lower_bound(_binds.begin(), _binds.end(), key);
         bool found = it != _binds.end() && it->key == key;
         if(!found) return;
-        actions_array[it->action].update(state, user_data);
+
+        const Action& action = actions_array[it->action].update(state);
+        if(action.is_just_pressed())
+            _just_pressed_actions.push_back(it->action);
+        else if(action.is_just_released())
+            _just_released_actions.push_back(it->action);
     }
-    Input::Input(Action* const actions_array, std::vector<_bindpair>&& binds)
-        : actions_array(actions_array), _binds(std::move(binds))
+    Input::Input(ActionsArray actions) : actions_array(actions.ptr)
     {
+        _just_pressed_actions.reserve(actions.count);
+        _just_released_actions.reserve(actions.count);
     }
-    Input::Input(Action* const actions_array) : actions_array(actions_array) {}
+    Input::Input(ActionsArray actions, std::vector<_bindpair>&& binds)
+        : actions_array(actions.ptr), _binds(std::move(binds))
+    {
+        _just_pressed_actions.reserve(actions.count);
+        _just_released_actions.reserve(actions.count);
+    }
     void Action::set_static_user_data(void* other) { static_user_data = other; }
+    void Input::frame_update()
+    {
+        for(auto&& it = _just_pressed_actions.rbegin(); it != _just_pressed_actions.rend(); it++)
+        {
+            get_action(*it).m_state = Action::State::PRESSED;
+            _just_pressed_actions.pop_back();
+        }
+        for(auto&& it = _just_released_actions.rbegin(); it != _just_released_actions.rend(); it++)
+        {
+            get_action(*it).m_state = Action::State::RELEASED;
+            _just_released_actions.pop_back();
+        }
+    };
 }  // namespace GPE

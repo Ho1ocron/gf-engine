@@ -1,7 +1,5 @@
 #include <engine.h>
 
-#include "GLFW/glfw3.h"
-
 
 namespace GPE
 {
@@ -111,10 +109,10 @@ namespace GPE
         glfwSetKeyCallback(window,
                            [](GLFWwindow* window, int key, int scancode, int action, int mods)
                            {
+                               if(action == GLFW_REPEAT) return;
                                static_cast<decltype(this)>(glfwGetWindowUserPointer(window))
                                    ->input.key_cb(static_cast<Input::Key>(key),
-                                                  action == GLFW_PRESS, mods,
-                                                  glfwGetWindowUserPointer(window));
+                                                  action == GLFW_PRESS, mods);
                            });
         glfwMakeContextCurrent(window);
 
@@ -150,6 +148,7 @@ namespace GPE
 
         const glm::mat4x4&& VP = camera.get_view_projection();
 
+        input.frame_update();
         draw_and_update_objs();
 
         glfwSwapBuffers(window);
