@@ -31,7 +31,6 @@ std::vector<std::shared_ptr<GPE::Text>> texts;
 
 enum class Actions : uint16_t
 {
-    K,
     QUIT,
     PRINT_HELLO,
     MOVE_UP,
