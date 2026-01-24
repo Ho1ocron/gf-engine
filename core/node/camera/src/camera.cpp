@@ -7,7 +7,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 
-namespace GPE
+namespace GFE
 {
     glm::mat4x4 Camera::get_view_projection() const
     {
@@ -21,5 +21,5 @@ namespace GPE
     glm::vec2 Camera::get_dimensions() const { return _dimensions; }
     void Camera::set_dimensions(const uint w, const uint h) { _dimensions = {w, h}; }
 
-}  // namespace GPE
+}  // namespace GFE
 #endif

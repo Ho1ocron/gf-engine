@@ -12,7 +12,7 @@
 
 #include "collision_shape_2d.h"
 
-namespace GPE
+namespace GFE
 {
     // template<class Drawable2D>
     struct CharacterBody2D : CollisionBody
@@ -38,4 +38,4 @@ namespace GPE
         void draw() override {}
         void free() override {}
     };
-}  // namespace GPE
+}  // namespace GFE

@@ -18,7 +18,7 @@
 #include FT_FREETYPE_H
 
 
-namespace GPE
+namespace GFE
 {
     class Engine
     {
@@ -86,9 +86,9 @@ namespace GPE
 
         static void print_str(const char* str);
 
-        glm::vec3 get_screen_center() const
+        GFE::Vec3 get_screen_center() const
         {
-            return glm::vec3(screen_width / 2.0f, screen_height / 2.0f, 0.0f);
+            return GFE::Vec3(screen_width / 2.0f, screen_height / 2.0f, 0.0f);
         }
         GLFWwindow* get_window() const { return window; }
 
@@ -106,6 +106,6 @@ namespace GPE
     //     return raw;
     // }
 
-}  // namespace GPE
+}  // namespace GFE
 
 #endif

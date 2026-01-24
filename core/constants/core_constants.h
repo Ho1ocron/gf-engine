@@ -6,12 +6,12 @@
 
 // #define FONT_DIR "assets/fonts/"
 
-namespace GPE
+namespace GFE
 {
     using Vec2 = glm::vec2;
     using Vec3 = glm::vec3;
     using Vec4 = glm::vec4;
-}  // namespace GPE
+}  // namespace GFE
 enum class TextureUnits : unsigned char
 {
     GENERAL0 = 0,

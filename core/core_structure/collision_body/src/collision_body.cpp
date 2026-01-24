@@ -1,6 +1,6 @@
 #include "collision_body.h"
 
-namespace GPE
+namespace GFE
 {
     void CollisionBody::setPosition(const glm::vec3& new_position) { position = new_position; }
     glm::vec3 CollisionBody::getPosition() const { return position; }
@@ -19,4 +19,4 @@ namespace GPE
 
     void CollisionBody::setSize(const glm::vec3& new_size) { size = new_size; }
     glm::vec3 CollisionBody::getSize() const { return size; }
-}  // namespace GPE
+}  // namespace GFE

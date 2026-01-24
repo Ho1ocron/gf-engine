@@ -2,7 +2,7 @@
 
 #define SHADER_DIR "core/assets/old_shaders/"
 
-namespace GPE
+namespace GFE
 {
     Text::Text(const char* text, const char* fontPath, glm::vec3 position, float fontSize,
                float scale, const unsigned int& screen_width, const unsigned int& screen_height,
@@ -184,4 +184,4 @@ namespace GPE
     //     }
     // }
     void Text::free() { return; }
-}  // namespace GPE
+}  // namespace GFE

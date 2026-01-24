@@ -10,7 +10,7 @@
 #include <vector>
 
 
-namespace GPE
+namespace GFE
 {
     struct Action
     {
@@ -277,5 +277,5 @@ namespace GPE
         Input(ActionsArray = {nullptr, 0});
     };
 
-}  // namespace GPE
+}  // namespace GFE
 #endif

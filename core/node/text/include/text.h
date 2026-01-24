@@ -15,7 +15,7 @@
 #include "text_shader.h"
 
 
-namespace GPE
+namespace GFE
 {
 
     struct Character
@@ -92,4 +92,4 @@ namespace GPE
         unsigned int VBO{};
         unsigned int VAO{};
     };
-}  // namespace GPE
+}  // namespace GFE

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cstdio>
 
-namespace GPE
+namespace GFE
 {
 
     Action& Action::update(const bool press_or_release)
@@ -118,4 +118,4 @@ namespace GPE
             _just_released_actions.pop_back();
         }
     };
-}  // namespace GPE
+}  // namespace GFE

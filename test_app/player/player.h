@@ -9,7 +9,7 @@
 #define BOLD_FONT "JetBrainsMono-Bold.ttf"
 
 
-class Player : public GPE::CharacterBody2D
+class Player : public GFE::CharacterBody2D
 {
 private:
     glm::vec3 size;
@@ -23,7 +23,7 @@ public:
            const glm::vec3& init_position = glm::vec3{0.0f}, const float& _speed = 1000.0f,
            const char* text = "@", const char* font_path = default_font_path,
            float font_size = 48.0f, float scale = 1.0f, const glm::vec3& color = glm::vec3{1.0f})
-        : CharacterBody2D(std::make_unique<GPE::Text>(text, font_path, init_position, font_size,
+        : CharacterBody2D(std::make_unique<GFE::Text>(text, font_path, init_position, font_size,
                                                       scale, screen_width, screen_height, color))
     {
         position = init_position;

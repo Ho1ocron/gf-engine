@@ -10,7 +10,7 @@
 #include <string_view>
 
 
-namespace GPE
+namespace GFE
 {
     class Label
     {
@@ -83,6 +83,6 @@ namespace GPE
               const glm::vec3& color = {1.0, 1.0, 1.0}, const Alignment alignment = Alignment::LEFT,
               const char* buf = nullptr, const size_t len = 0);
     };
-}  // namespace GPE
+}  // namespace GFE
 
 #endif

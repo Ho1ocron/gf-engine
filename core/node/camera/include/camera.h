@@ -13,7 +13,7 @@ using uint = std::uint32_t;
 #include <cstdint>
 using uint = std::uint32_t;
 #endif
-namespace GPE
+namespace GFE
 {
     class Camera
     {
@@ -27,4 +27,4 @@ namespace GPE
         void set_dimensions(const uint w, const uint h);
         glm::vec2 get_dimensions() const;
     };
-}  // namespace GPE
+}  // namespace GFE

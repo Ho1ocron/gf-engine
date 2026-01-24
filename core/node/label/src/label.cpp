@@ -7,7 +7,7 @@
 #include <cstring>
 
 // TODO: lazy buffers updating
-namespace GPE
+namespace GFE
 {
     Label& Label::set_text(const char* buf, const size_t& len, const Alignment alignment)
     {
@@ -144,5 +144,5 @@ namespace GPE
         out[3][2] = 0.0f;
         return out;
     }
-}  // namespace GPE
+}  // namespace GFE
 #endif

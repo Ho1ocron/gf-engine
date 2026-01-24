@@ -1,6 +1,6 @@
 #include "character_body_2d.h"
 
-namespace GPE
+namespace GFE
 {
     void CharacterBody2D::updateSprite(unsigned int width, unsigned int height)
     {
@@ -26,4 +26,4 @@ namespace GPE
         move(deltaTime, (float)screen_w, (float)screen_h);
         updateSprite(screen_w, screen_h);
     }
-}  // namespace GPE
+}  // namespace GFE

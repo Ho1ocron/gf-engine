@@ -5,7 +5,7 @@
 
 #include <glm/glm.hpp>
 
-namespace GPE
+namespace GFE
 {
     struct CollisionBody : Drawable2D
     {
@@ -51,4 +51,4 @@ namespace GPE
 
         virtual void free() override = 0;
     };
-}  // namespace GPE
+}  // namespace GFE

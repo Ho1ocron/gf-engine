@@ -1,10 +1,10 @@
-#ifndef GPE_INPUT_H
-#define GPE_INPUT_H
+#ifndef GFE_INPUT_H
+#define GFE_INPUT_H
 
 #include <functional>
 
 
-namespace GPE
+namespace GFE
 {
     enum class Key
     {
@@ -71,6 +71,6 @@ namespace GPE
         Input() = default;
         virtual ~Input() = default;
     };
-}  // namespace GPE
+}  // namespace GFE
 
 #endif
