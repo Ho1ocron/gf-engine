@@ -1,9 +1,9 @@
 [submodule "glfw"]
-	path = core/libs/glfw
+	path = libs/glfw
 	url = https://github.com/glfw/glfw.git
 [submodule "freetype"]
-	path = core/libs/freetype
+	path = libs/freetype
 	url = https://github.com/freetype/freetype.git
 [submodule "glm"]
-	path = core/libs/glm
+	path = libs/glm
 	url = https://github.com/g-truc/glm.git

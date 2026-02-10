@@ -2,6 +2,25 @@
     "version": 3,
     "configurePresets": [
         {
+            "name": "_libs_provided",
+            "displayName": "Provided libs (base preset)",
+            "description": "All libs are provided by user",
+            "cacheVariables": {
+                "GF_LIB_PROVIDED_GLFW": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "GF_LIB_PROVIDED_GLM": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "GF_LIB_PROVIDED_FREETYPE": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
             "name": "debug",
             "displayName": "Debug",
             "description": "Debug build using default generator (build/)",
