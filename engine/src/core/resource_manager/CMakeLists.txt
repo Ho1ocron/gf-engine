@@ -1,16 +1,12 @@
 add_library(resource_manager STATIC
-    ${GFE_INCLUDES_CORE}/resource_manager/resource_manager.h
+    ${GF_INCLUDES_PRIVATE}/core/resource_manager/resource_manager.h
     resource_manager.cpp
 )
 add_library(gfe::resource_manager ALIAS resource_manager)
 target_include_directories(resource_manager
     PUBLIC
-        ${GFE_INCLUDES_PUBLIC}/
-        ${GFE_USERINCLUDES}/
-    PRIVATE
-    #     ${GFE_INCLUDES_CORE}/
-    #     ${GFE_INCLUDES_ENGINE}/
-        # ${GFE_USERINCLUDES}/
+        ${GF_INCLUDES_PUBLIC}/
+        ${GF_USERINCLUDES}/
 )
 target_link_libraries(resource_manager PUBLIC
     gfe::core_constants

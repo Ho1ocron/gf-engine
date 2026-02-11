@@ -1,14 +1,11 @@
 add_library(font STATIC
-    ${GFE_INCLUDES_CORE}/font/font.h
+    ${GF_INCLUDES_PRIVATE}/core/font/font.h
     font.cpp
 )
 add_library(gfe::font ALIAS font)
 target_include_directories(font
     PUBLIC
-        ${GFE_INCLUDES_PUBLIC}/
-    # PRIVATE
-    #     ${GFE_INCLUDES_CORE}/
-    #     ${GFE_INCLUDES_CORE}/font/
+        ${GF_INCLUDES_PUBLIC}/
 )
 target_link_libraries(font PUBLIC
     freetype::freetype

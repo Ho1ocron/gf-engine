@@ -15,8 +15,10 @@ set(_GF_ANY_LIB_PROVIDED (
     OR GF_LIB_PROVIDED_FREETYPE
 ))
 
-if(NOT DEFINED GFE_USERINCLUDES)
-    message(AUTHOR_WARNING "GFE_USERINCLUDES is not defined! Didn't you forget to define it, did you?")
+# user should define GF_USERINCLUDES to provide headers that
+# are used by engine at compile-time (e.g. paths)
+if(NOT DEFINED GF_USERINCLUDES)
+    message(AUTHOR_WARNING "GF_USERINCLUDES is not defined! Didn't you forget to define it, did you?")
 endif()
 
 ### third-party
@@ -75,30 +77,23 @@ add_library(freetype::freetype ALIAS freetype)
 
 
 ### paths to sublibraries (use in sublib's target_include_directories())
-# sublibraries should export GFE_INCLUDES_PUBLIC for "gfe/" prefix in #include:
-# #include <gfe/render/texture.hpp>
-# // instead of
-# #include <render/texture.hpp>
-set(GFE_INCLUDES_PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+# sublibs must perform
+# target_include_directories(foolib INTERFACE/PUBLIC ${GF_INCLUDES_PUBLIC})
+set(GF_INCLUDES_PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+# GF_INCLUDES_PRIVATE is used to get path to .cpp/.h in add_library()
+set(GF_INCLUDES_PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/gfe/")
 
-# PRIVATE includes:
-# core/ - core and base things
-set(GFE_INCLUDES_CORE "${CMAKE_CURRENT_SOURCE_DIR}/include/gfe/core/")
-# nodes/ - game objects
-set(GFE_INCLUDES_NODES "${CMAKE_CURRENT_SOURCE_DIR}/include/gfe/nodes/")
-# actual engine (for actual engine target)
-set(GFE_INCLUDES_ENGINE "${CMAKE_CURRENT_SOURCE_DIR}/include/gfe/")
 
 ### actual engine target
 add_library(gfe
-    ${GFE_INCLUDES_ENGINE}/engine/engine.h
+    ${GF_INCLUDES_PRIVATE}/engine/engine.h
     src/engine/engine.cpp
 )
 add_library(gfe::gfe ALIAS gfe)
 target_include_directories(gfe
-    PUBLIC ${GFE_INCLUDES_PUBLIC}/
-    PRIVATE ${GFE_INCLUDES_ENGINE}/
-    ${GFE_USERINCLUDES}/
+    PUBLIC
+        ${GF_INCLUDES_PUBLIC}/
+        ${GF_USERINCLUDES}/
 )
 
 target_link_libraries(gfe
@@ -108,9 +103,9 @@ target_link_libraries(gfe
         glm::glm
         glfw::glfw
         freetype::freetype
+        # user
         gfe_app_constants
-        gfe::text
-        gfe::camera
+        # engine
 )
 
 ### sublibraries
@@ -132,12 +127,5 @@ add_custom_command(TARGET gfe POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/assets"
         "$<TARGET_FILE_DIR:gfe>/assets"
-    COMMENT "Copying assets..."
+    COMMENT "gfe::Copying internal assets..."
 )
-
-
-
-# target_link_libraries(gfe PUBLIC
-#     glad
-#     ...
-# )

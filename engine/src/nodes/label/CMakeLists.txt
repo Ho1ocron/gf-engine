@@ -1,15 +1,13 @@
 add_library(label STATIC
-    ${GFE_INCLUDES_NODES}/label/label.h
+    ${GF_INCLUDES_PRIVATE}/nodes/label/label.h
     label.cpp
 )
 add_library(gfe::label ALIAS label)
 target_include_directories(label
     PUBLIC
-        ${GFE_INCLUDES_PUBLIC}/
-        ${GFE_USERINCLUDES}/
-    # PRIVATE
-    #     ${GFE_INCLUDES_CORE}/
-    #     ${GFE_INCLUDES_NODES}/label
+        ${GF_INCLUDES_PUBLIC}/
+    PRIVATE
+        ${GF_USERINCLUDES}/
 )
 target_link_libraries(label PUBLIC
     glm::glm

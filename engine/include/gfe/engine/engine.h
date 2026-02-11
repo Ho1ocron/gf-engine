@@ -5,12 +5,12 @@
 // hey clang-format please dont shuffle includes here
 #include <GLFW/glfw3.h>
 // thank you
+#include <gfe/core/input/input.h>
+#include <gfe/core/resource_manager/resource_manager.h>
+#include <ft2build.h>
 #include <gfe/nodes/camera/camera.h>
 #include <gfe/nodes/idrawable/idrawable.h>
-#include <ft2build.h>
-#include <gfe/core/input/input.h>
 #include <gfe/nodes/label/label.h>
-#include <gfe/core/resource_manager/resource_manager.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>

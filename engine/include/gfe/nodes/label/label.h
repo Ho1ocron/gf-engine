@@ -2,8 +2,8 @@
 #define LABEL_HPP
 
 #include <gfe/core/font/font.h>
-#include <gfe/core/resource_manager/resource_manager.h>
 #include <gfe/core/render/shader.h>
+#include <gfe/core/resource_manager/resource_manager.h>
 
 #include <glm/ext/vector_float3.hpp>
 #include <memory>

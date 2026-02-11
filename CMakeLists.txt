@@ -9,7 +9,8 @@ set(GF_LIB_PROVIDED_FREETYPE ON)
 add_subdirectory(libs/glfw/)
 add_subdirectory(libs/freetype/)
 add_subdirectory(libs/glm/)
-set(GFE_USERINCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/app/gfe)
+set(GF_USERINCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/app/gfe)
+set(GF_USER_ASSETS_PATH "assets/")
 
 # constants for gfe to utilize
 add_library(gfe_app_constants INTERFACE
@@ -32,6 +33,8 @@ add_executable(app app/main.cpp)
 target_link_libraries(app PRIVATE
     gfe::gfe
     gfe::input
+    gfe::text
+    gfe::camera
     gfe::core_utils
     gfe::label
 )
@@ -40,5 +43,5 @@ add_custom_command(TARGET app POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
         "${CMAKE_CURRENT_SOURCE_DIR}/assets"
         "$<TARGET_FILE_DIR:app>/assets"
-    COMMENT "Copying assets..."
+    COMMENT "app::Copying assets..."
 )
