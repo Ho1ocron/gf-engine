@@ -6,8 +6,8 @@ add_library(gfe::text ALIAS text)
 target_include_directories(text
     PUBLIC
         ${GF_INCLUDES_PUBLIC}/
-    PRIVATE
-        ${GF_USERINCLUDES}/
+    # PRIVATE
+    #     ${GF_USERINCLUDES}/
 )
 target_link_libraries(text PUBLIC
     glm::glm

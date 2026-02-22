@@ -16,7 +16,11 @@ set(GF_USER_ASSETS_PATH "assets/")
 add_library(gfe_app_constants INTERFACE
     app/gfe/constants/paths.h
 )
-target_link_directories(gfe_app_constants
+target_link_libraries(gfe_app_constants
+    INTERFACE
+        gfe::core_assets
+)
+target_include_directories(gfe_app_constants
     INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/app/
 )
@@ -36,6 +40,7 @@ target_link_libraries(app PRIVATE
     gfe::text
     gfe::camera
     gfe::core_utils
+    gfe::core_assets
     gfe::label
 )
 

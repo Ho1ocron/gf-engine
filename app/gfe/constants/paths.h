@@ -1,7 +1,8 @@
 #pragma once
 #include <cstring>
 #include <string_view>
-#define SHADER_DIR "engine/assets/shaders/"
+#include <gfe_generated/core/assets/paths.h>
+// #define SHADER_DIR "engine/assets/shaders/"
 
 // #define FONT_DIR "assets/fonts/"
 
@@ -31,17 +32,18 @@ struct ShadersPaths
 };
 
 // TODO: add SHADER_DIR "/" in ResourceManager
-#define _SHADER2(ID, vertpath, fragpath)                                \
-    template <>                                                         \
-    constexpr const ShadersPaths ShadersPaths::get_path<ShaderID::ID>() \
-    {                                                                   \
-        return ShadersPaths{vertpath, fragpath};                        \
+#define _SHADER2(ID, vertpath, fragpath)                                                 \
+    template <>                                                                          \
+    constexpr const ShadersPaths ShadersPaths::get_path<ShaderID::ID>()                  \
+    {                                                                                    \
+        return ShadersPaths{GFE_ASSETS_CORE "/" vertpath, GFE_ASSETS_CORE "/" fragpath}; \
     }
-#define _SHADER3(ID, vertpath, fragpath, geompath)                      \
-    template <>                                                         \
-    constexpr const ShadersPaths ShadersPaths::get_path<ShaderID::ID>() \
-    {                                                                   \
-        return ShadersPaths{vertpath, fragpath, geompath};              \
+#define _SHADER3(ID, vertpath, fragpath, geompath)                                      \
+    template <>                                                                         \
+    constexpr const ShadersPaths ShadersPaths::get_path<ShaderID::ID>()                 \
+    {                                                                                   \
+        return ShadersPaths{GFE_ASSETS_CORE "/" vertpath, GFE_ASSETS_CORE "/" fragpath, \
+                            GFE_ASSETS_CORE "/" geompath};                              \
     }
 
 #pragma region list_shaders

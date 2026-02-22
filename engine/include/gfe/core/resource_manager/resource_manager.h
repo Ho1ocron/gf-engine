@@ -3,7 +3,7 @@
 #define RESOURCE_MANAGER_H
 
 #include <gfe/core/constants/texture_units.h>
-#include <constants/paths.h>
+#include <gfe/constants/paths.h>
 #include <gfe/core/font/font.h>
 #include <gfe/core/render/shader.h>
 

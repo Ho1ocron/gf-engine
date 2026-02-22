@@ -1,5 +1,5 @@
 #include <gfe/nodes/text/text.h>
-#include <constants/paths.h>
+#include <gfe/constants/paths.h>
 
 // #define SHADER_DIR "core/assets/old_shaders/"
 
@@ -15,7 +15,7 @@ namespace GPE
           screen_height(screen_height),
           screen_width(screen_width),
           color(color),
-          shader(SHADER_DIR "text_old.vs", SHADER_DIR "text_old.fs")
+          shader(GFE_ASSETS_CORE "shaders/text_old.vs", GFE_ASSETS_CORE "shaders/text_old.fs")
     {
         loadFont(fontPath, fontSize);
         setupBuffers();

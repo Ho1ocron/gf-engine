@@ -15,11 +15,12 @@ set(_GF_ANY_LIB_PROVIDED (
     OR GF_LIB_PROVIDED_FREETYPE
 ))
 
-# user should define GF_USERINCLUDES to provide headers that
-# are used by engine at compile-time (e.g. paths)
-if(NOT DEFINED GF_USERINCLUDES)
-    message(AUTHOR_WARNING "GF_USERINCLUDES is not defined! Didn't you forget to define it, did you?")
-endif()
+# user should provide target "gfe_app_constants"
+# # user should define GF_USERINCLUDES to provide headers that
+# # are used by engine at compile-time (e.g. paths)
+# if(NOT DEFINED GF_USERINCLUDES)
+#     message(AUTHOR_WARNING "GF_USERINCLUDES is not defined! Didn't you forget to define it, did you?")
+# endif()
 
 ### third-party
 add_library(glad STATIC third_party/glad/src/glad.c)
@@ -82,7 +83,17 @@ add_library(freetype::freetype ALIAS freetype)
 set(GF_INCLUDES_PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 # GF_INCLUDES_PRIVATE is used to get path to .cpp/.h in add_library()
 set(GF_INCLUDES_PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/gfe/")
+# build/generated/ - files that are generated from .h.in
+set(GF_INCLUDES_GENERATED_PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/generated_headers/")
+# internal use
+set(GF_INCLUDES_GENERATED_PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated_headers/gfe_generated/")
 
+# binary (build/${GF_ASSETS_REL_PATH}) and relative to executable
+set(GF_ASSETS_REL_PATH "assets/")
+#
+if (NOT DEFINED GF_ASSETS_ENGINE_PATH)
+    set(GF_ASSETS_ENGINE_PATH "engine/")
+endif()
 
 ### actual engine target
 add_library(gfe
@@ -109,6 +120,7 @@ target_link_libraries(gfe
 )
 
 ### sublibraries
+add_subdirectory(src/core/assets)
 # interfaces
 add_subdirectory(src/core/constants)
 add_subdirectory(src/core/utils)
@@ -123,9 +135,11 @@ add_subdirectory(src/nodes/camera)
 add_subdirectory(src/nodes/label)
 add_subdirectory(src/nodes/text)
 
+
+
 add_custom_command(TARGET gfe POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets"
-        "$<TARGET_FILE_DIR:gfe>/assets"
-    COMMENT "gfe::Copying internal assets..."
+        "${CMAKE_CURRENT_SOURCE_DIR}/${GF_ASSETS_REL_PATH}/core"
+        "${PROJECT_BINARY_DIR}/${GF_ASSETS_REL_PATH}/core/"
+    COMMENT "gfe::Copying core assets..."
 )

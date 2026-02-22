@@ -1,0 +1,3 @@
+#pragma once
+// generated
+#define GFE_ASSETS_CORE "@GF_ASSETS_ENGINE_PATH@/@GF_ASSETS_REL_PATH@/core/"

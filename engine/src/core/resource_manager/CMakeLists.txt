@@ -6,7 +6,7 @@ add_library(gfe::resource_manager ALIAS resource_manager)
 target_include_directories(resource_manager
     PUBLIC
         ${GF_INCLUDES_PUBLIC}/
-        ${GF_USERINCLUDES}/
+        # ${GF_USERINCLUDES}/
 )
 target_link_libraries(resource_manager PUBLIC
     gfe::core_constants
